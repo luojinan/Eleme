@@ -11,6 +11,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+        //配置api路径
         '/api/':{
             target:'http://localhost:8088',
             pathRewrite:{

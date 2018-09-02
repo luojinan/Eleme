@@ -1,5 +1,6 @@
 <template>
 	<div class="home">
+		<home-header :seller="seller"></home-header>
 		这是主页鸭！
 		{{seller.name}}
 	</div>
@@ -8,6 +9,7 @@
 <script>
 //引入axios插件
 import axios from 'axios'
+import HomeHeader from './components/HomeHeader'
 
 export default{
 	name:'Home',
@@ -17,7 +19,7 @@ export default{
 		}
 	},
 	components:{
-
+		HomeHeader,
 	},
 	//组件方法对象
 	methods:{
@@ -28,7 +30,7 @@ export default{
 		//成功获取json数据的回调函数
 		getHomeInfoSucc(res){
 			//测试一下
-			console.log(res)
+			console.log(res.data.seller)
 			const data = res.data	//减少json数据书写的层级
 			//判断数据存在的情况下执行操作数据赋值
 			if(res.data){
@@ -45,11 +47,6 @@ export default{
 </script>
 <style>
 	.home{
-		height: 1rem;
-		width: 50%;
-		background-color: #eee;
-		margin:.2rem auto;
-		text-align: center;
-		line-height: 1rem;
+		
 	}
 </style>
