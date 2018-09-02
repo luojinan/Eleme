@@ -42,3 +42,14 @@ white-space: nowrap;    /*省略号*/
 overflow: hidden;   /*隐藏内容*/
 text-overflow: ellipsis;    /*省略号*/
 ```
+### 公共组件传值
+
+### 公共组件插槽封装
+
+### 字体问题
+
+### 评分组件
+
+### 滚动功能
+
+### 动画效果组件

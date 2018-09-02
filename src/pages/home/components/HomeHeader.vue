@@ -19,7 +19,7 @@
 					<span>{{seller.supports[0].description}}</span>
 				</div>
 			</div>
-			<div v-if="seller.supports" class="home-header_content--count">
+			<div v-if="seller.supports" class="home-header_content--count" @click="handleGallaryOpen">
 				<span class="home-header_content--num">{{seller.supports.length}}个</span>
 				<span calss="home-header_content--numicon"></span>
 			</div>
@@ -34,12 +34,15 @@
 		<div class="home-header_background">
 			<img :src="seller.avatar" width="100%" height="100%">
 		</div>
+		<home-gallary :seller="seller" v-show="isShow" @close="handelGallaryClose"></home-gallary>
 	</div>
 </template>
 
 <script>
 //引入axios插件
 import axios from 'axios'
+//引入公共组件公告页
+import HomeGallary from '@/common/HomeGallary'
 
 export default{
 	name:'HomeHeader',
@@ -50,11 +53,20 @@ export default{
 	},
 	data:function(){
 		return {
-			
+			isShow:false,
 		}
 	},
 	components:{
-
+		HomeGallary
+	},
+	methods:{
+		//点击数量悬浮键打开公共组件
+		handleGallaryOpen(){
+			this.isShow = true
+		},
+		handelGallaryClose(){
+			this.isShow = false
+		}
 	},
 	
 
@@ -65,6 +77,7 @@ export default{
 		position: relative;
 		color: #fff;
 		background-color: rgba(7,17,27,0.5);
+		overflow: hidden;
 	}
 	.home-header_content{
 		position: relative;
