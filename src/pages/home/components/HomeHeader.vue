@@ -34,7 +34,9 @@
 		<div class="home-header_background">
 			<img :src="seller.avatar" width="100%" height="100%">
 		</div>
-		<home-gallary :seller="seller" v-show="isShow" @close="handelGallaryClose"></home-gallary>
+		<fade-animation>
+			<home-gallary :seller="seller" v-show="isShow" @close="handelGallaryClose"></home-gallary>
+		</fade-animation>
 	</div>
 </template>
 
@@ -43,6 +45,7 @@
 import axios from 'axios'
 //引入公共组件公告页
 import HomeGallary from '@/common/HomeGallary'
+import FadeAnimation from '@/common/fade/FadeAnimation'
 
 export default{
 	name:'HomeHeader',
@@ -57,7 +60,8 @@ export default{
 		}
 	},
 	components:{
-		HomeGallary
+		HomeGallary,
+		FadeAnimation
 	},
 	methods:{
 		//点击数量悬浮键打开公共组件

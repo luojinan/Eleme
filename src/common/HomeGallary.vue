@@ -2,21 +2,13 @@
 	<div class="home-gallary">
 		<div class="home-gallary_name">{{seller.name}}</div>
 		<div class="home-gallary_score">{{seller.score}}</div>
-		<div class="home-gallary_title">
-			<div class="home-gallary_title--line"></div>
-			<div class="home-gallary_title--text">优惠信息</div>
-			<div class="home-gallary_title--line"></div>
-		</div>
+		<gallary-title>优惠信息</gallary-title>
 		<ul class="home-gallary_supports">
 			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
 				{{item.description}}
 			</li>
 		</ul>
-		<div class="home-gallary_title">
-			<div class="home-gallary_title--line"></div>
-			<div class="home-gallary_title--text">商家公告</div>
-			<div class="home-gallary_title--line"></div>
-		</div>
+		<gallary-title>商家公告</gallary-title>
 		<div class="home-gallary_bulletin">
 			<div calss="home-gallary_bulletin--text">{{seller.bulletin}}</div>
 		</div>
@@ -25,7 +17,8 @@
 </template>
 
 <script>
-
+//引入标题小组件
+import GallaryTitle from '@/common/GallaryTitle'
 
 export default{
 	name:'HomeGallary',
@@ -38,6 +31,9 @@ export default{
 		seller:{
 			type:Object
 		}
+	},
+	components:{
+		GallaryTitle
 	},
 	methods:{
 		handleGallaryClose(){
@@ -58,8 +54,8 @@ export default{
 		min-height: 100%;
 		width: 100%;
 		background-color: rgba(7,17,27,0.8);
-		
 	}
+
 	.home-gallary_name{
 		margin-top: 64px;
 		font-size: 16px;
@@ -71,23 +67,6 @@ export default{
 		margin-top: 16px;
 		line-height: 24px;
 		text-align: center;
-	}
-/*标题样式*/
-	.home-gallary_title{
-		display: flex;
-		width: 90%;
-		margin:28px auto 24px auto;
-	}
-	.home-gallary_title--line{
-		flex: 1;
-		position: relative;
-		top:-6px;
-		border-bottom: 1px solid rgba(255,255,255,0.2);
-	}
-	.home-gallary_title--line{
-		font-size: 14px;
-		margin: 0 12px;
-		font-weight: 700;
 	}
 /*公告列表样式*/
 	.home-gallary_supports{
