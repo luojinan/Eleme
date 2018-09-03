@@ -35,7 +35,7 @@ export default{
 		//成功获取json数据的回调函数
 		getHomeInfoSucc(res){
 			//测试一下
-			console.log(res.data)
+			console.log(res.data.goods)
 			const data = res.data	//减少json数据书写的层级
 			//判断数据存在的情况下执行操作数据赋值
 			if(res.data){
