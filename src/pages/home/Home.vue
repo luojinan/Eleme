@@ -1,8 +1,7 @@
 <template>
 	<div class="home">
 		<home-header :seller="seller"></home-header>
-		这是主页鸭！
-		{{seller.name}}
+		<home-tab></home-tab>
 	</div>
 </template>
 
@@ -10,6 +9,7 @@
 //引入axios插件
 import axios from 'axios'
 import HomeHeader from './components/HomeHeader'
+import HomeTab from './components/HomeTab'
 
 export default{
 	name:'Home',
@@ -20,6 +20,7 @@ export default{
 	},
 	components:{
 		HomeHeader,
+		HomeTab
 	},
 	//组件方法对象
 	methods:{

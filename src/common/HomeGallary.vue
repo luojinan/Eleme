@@ -9,9 +9,7 @@
 				{{item.description}}
 			</li>
 		</ul>
-<<<<<<< HEAD
 		<gallary-title>商家公告</gallary-title>
-=======
 
 		<div class="home-gallary_title">
 			<div class="home-gallary_title--line"></div>
@@ -47,7 +45,6 @@
 			<div class="home-gallary_title--text">商家公告</div>
 			<div class="home-gallary_title--line"></div>
 		</div>
->>>>>>> home-gallary
 		<div class="home-gallary_bulletin">
 			<div calss="home-gallary_bulletin--text">{{seller.bulletin}}</div>
 		</div>
@@ -57,13 +54,12 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 //引入标题小组件
 import GallaryTitle from '@/common/GallaryTitle'
-=======
+
 //引入滚动插件
 import BScroll from 'better-scroll'
->>>>>>> home-gallary
+
 
 export default{
 	name:'HomeGallary',
@@ -101,13 +97,12 @@ export default{
 		right: 0;
 		overflow: hidden;
 		background-color: rgba(7,17,27,0.8);
-<<<<<<< HEAD
-=======
+
 		z-index: 99;
 	}
 	.home-gallary{
 		position: relative;	
->>>>>>> home-gallary
+
 	}
 
 	.home-gallary_name{
