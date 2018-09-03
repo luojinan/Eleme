@@ -1,5 +1,6 @@
 <template>
-	<div class="home-gallary">
+<div class="home-gallary_wrapper" ref="wrapper">
+	<div class="home-gallary" >
 		<div class="home-gallary_name">{{seller.name}}</div>
 		<div class="home-gallary_score">{{seller.score}}</div>
 		<div class="home-gallary_title">
@@ -12,6 +13,36 @@
 				{{item.description}}
 			</li>
 		</ul>
+
+		<div class="home-gallary_title">
+			<div class="home-gallary_title--line"></div>
+			<div class="home-gallary_title--text">优惠信息</div>
+			<div class="home-gallary_title--line"></div>
+		</div>
+		<ul class="home-gallary_supports">
+			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
+				{{item.description}}
+			</li>
+		</ul><div class="home-gallary_title">
+			<div class="home-gallary_title--line"></div>
+			<div class="home-gallary_title--text">优惠信息</div>
+			<div class="home-gallary_title--line"></div>
+		</div>
+		<ul class="home-gallary_supports">
+			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
+				{{item.description}}
+			</li>
+		</ul><div class="home-gallary_title">
+			<div class="home-gallary_title--line"></div>
+			<div class="home-gallary_title--text">优惠信息</div>
+			<div class="home-gallary_title--line"></div>
+		</div>
+		<ul class="home-gallary_supports">
+			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
+				{{item.description}}
+			</li>
+		</ul>	
+
 		<div class="home-gallary_title">
 			<div class="home-gallary_title--line"></div>
 			<div class="home-gallary_title--text">商家公告</div>
@@ -22,10 +53,12 @@
 		</div>
 		<span class="home-gallary_close" @click="handleGallaryClose">X</span>
 	</div>
+</div>
 </template>
 
 <script>
-
+//引入滚动插件
+import BScroll from 'better-scroll'
 
 export default{
 	name:'HomeGallary',
@@ -43,25 +76,30 @@ export default{
 		handleGallaryClose(){
 			this.$emit('close') //点击创建自定义事件，用于组件传值
 		}
-	}
-
-
+	},
+	//挂载实例类插件，写生命周期中
+	mounted(){
+		this.scroll = new BScroll(this.$refs.wrapper)
+	},
 }
 </script>
 <style>
-	.home-gallary{
-		position: relative;
-		z-index: 99;
+	.home-gallary_wrapper{
+		
 		position: fixed;
 		top: 0;
 		left: 0;
-		min-height: 100%;
-		width: 100%;
+		bottom: 0;
+		right: 0;
+		overflow: hidden;
 		background-color: rgba(7,17,27,0.8);
-		
+		z-index: 99;
+	}
+	.home-gallary{
+		position: relative;	
 	}
 	.home-gallary_name{
-		margin-top: 64px;
+		/*margin-top: 64px;*/
 		font-size: 16px;
 		line-height: 16px;
 		font-weight: 700;
