@@ -43,6 +43,6 @@ export default {
 	}
 	.router-link-active{
 	        color: #007AFF;
-	        border-bottom: .04rem solid #007AFF;
+	        border-bottom: 1px solid #007AFF;
 	}
 </style>
