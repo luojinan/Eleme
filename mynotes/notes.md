@@ -51,5 +51,32 @@ text-overflow: ellipsis;    /*省略号*/
 ### 评分组件
 
 ### 滚动功能
+- 首次进入也米娜better-scroll不生效刷新或切换设备才能生效
+    - 问答，要确保Dom把内容撑开，而挂载在mounted上，是肯定已经撑开了的
 
 ### 动画效果组件
+```
+<template>
+    <!--vue内置动画-->
+    <!--组件内有内容，要加插槽-->
+    <transition>
+        <slot></slot>
+    </transition>
+</template>
+
+<script>
+export default {
+    name:'Fafe',
+}
+</script>
+
+<style>
+    /*自动会有class，不用在template中设置*/
+    .v-enter , .v-leave-to{
+        opacity:0;
+    }
+    .v-enter-active, .v-leave-active{
+        transition: opacity .5s
+    }
+</style>
+```
