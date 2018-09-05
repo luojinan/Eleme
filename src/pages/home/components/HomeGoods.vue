@@ -1,15 +1,15 @@
 <template>
 	<div class="home-goods">
 		<div class="home-goods_menu" ref="meunWrapper">
-			<div>
-				<div class="home-goods_menuitem" v-for="(item,index) in goods">
+			<ul>
+				<li class="home-goods_menuitem" :class="{'current':currentIndex===index}" v-for="(item,index) in goods">
 					{{item.name}}
-				</div>
-			</div>
+				</li>
+			</ul>
 		</div>
 		<div class="home-goods_foods" ref="foodsWrapper">
 			<ul>
-				<li v-for="item in goods">
+				<li v-for="item in goods" class="foods-list-hook">
 					<div class="home-goods_foods--title">{{item.name}}</div>
 					<ul >
 						<li class="home-goods_foods--item" v-for="foods in item.foods">
@@ -50,12 +50,61 @@ export default {
 			type:Object
 		}
 	},
+	data(){
+		return{
+			heightList:[],
+			scrollY:0
+		} 
+	},
+	methods:{
+		//获取DOM高度并赋值给变量
+		_calculateHight(){
+			//获取一个类的li高度
+			//获取DOM元素className
+			let foodlist = this.$refs.foodsWrapper.getElementsByClassName('foods-list-hook');
+			//把高度push进从0开始的数组
+			let height = 0;
+			this.heightList.push(height);
+			for(let i=0; i < foodlist.length; i++){
+				//DOM的方法clientHeight获取高度
+				height += foodlist[i].clientHeight;
+				this.heightList.push(height);
+			}
+			//测试一下
+			console.log(this.heightList);
+		}
+	},
 	mounted(){
 		this.$nextTick(() => {
 			this.meunScroll = new BScroll(this.$refs.meunWrapper)
-			this.foodsScroll = new BScroll(this.$refs.foodsWrapper)
+			this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{probeType:3})
+
+			//利用better-scroll的方法获取滚动值
+			this.foodsScroll.on('scroll',(pos) => {
+				this.scrollY = Math.abs(Math.round(pos.y))	//pso.y获取滚动值，取整取正
+				//console.log(this.scrollY)	//测试一下
+				console.log(this.currentIndex)
+			})
+
+			//挂载好数据之后执行获取DOM高度方法
+			//首次进入没有效果，异步？？？
+			this._calculateHight()
 		}) 
   	},
+  	computed:{
+  		//判断滚动值是在那一个序列中，用在:class的li上
+  		currentIndex(){
+  			//使用循环来逐一判断
+  			for(let i=0 ; i<this.heightList.length ; i++){
+  				let height1 = this.heightList[i]
+  				let height2 = this.heightList[i+1]
+  				if(!height2 || this.scrollY < height2 && this.scrollY >= height1){
+  					return i
+  				}
+  			}
+  			return 0	//默认处于第一个序列
+  		}
+  	}
 }
 </script>
 
@@ -138,5 +187,11 @@ export default {
 		font-size: 10px;
 		color: rgb(147,153,159);
 		text-decoration: line-through;
+	}
+/*类型滚动到样式*/
+	.current{
+		background-color: #fff;
+		font-weight: 700;
+		color: #007AFF;
 	}
 </style>
