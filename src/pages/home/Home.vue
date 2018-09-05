@@ -35,7 +35,7 @@ export default{
 		//成功获取json数据的回调函数
 		getHomeInfoSucc(res){
 			//测试一下
-			console.log(res.data.goods)
+			//console.log(res.data.goods)
 			const data = res.data	//减少json数据书写的层级
 			//判断数据存在的情况下执行操作数据赋值
 			if(res.data){
@@ -45,10 +45,14 @@ export default{
 		}
 	},
 	//生命周期钩子，执行ajax方法
-	mounted(){
-		this.getHomeInfo()
-	},
-
+	created(){
+		this.$nextTick(() => {
+			this.getHomeInfo()
+		})
+		//console.log('获取数据的异步下面执行')
+		//console.log(this.goods)
+	}
+	//传值给子组件时，数据有没有获取到？页面有内容啊！！！再哪一步传值给子组件的，如果传到了，生命周期里
 }
 </script>
 <style>
