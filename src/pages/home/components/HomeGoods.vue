@@ -62,6 +62,7 @@ export default {
 	},
 	methods:{
 		_calculateHight(){
+		this.$nextTick(() => {
 			//挂载滚动插件
 			this.meunScroll = new BScroll(this.$refs.meunWrapper)
 			this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{probeType:3})
@@ -75,7 +76,7 @@ export default {
 				//console.log(this.currentIndex)
 			})
 
-		this.$nextTick(() => {
+		
 			//获取一个类的li高度
 			//获取DOM元素className
 			let foodWrapper = this.$refs.foodsWrapper

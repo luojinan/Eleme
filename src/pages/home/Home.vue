@@ -46,9 +46,7 @@ export default{
 	},
 	//生命周期钩子，执行ajax方法
 	created(){
-		this.$nextTick(() => {
 			this.getHomeInfo()
-		})
 		//console.log('获取数据的异步下面执行')
 		//console.log(this.goods)
 	}
