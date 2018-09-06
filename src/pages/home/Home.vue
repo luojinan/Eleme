@@ -3,6 +3,7 @@
 		<home-header :seller="seller"></home-header>
 		<home-tab></home-tab>
 		<home-goods :seller="seller" :goods="goods"></home-goods>
+		<home-shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></home-shopcart>
 	</div>
 </template>
 
@@ -12,6 +13,7 @@ import axios from 'axios'
 import HomeHeader from './components/HomeHeader'
 import HomeTab from './components/HomeTab'
 import HomeGoods from './components/HomeGoods'
+import HomeShopcart from './components/HomeShopcart'
 
 export default{
 	name:'Home',
@@ -24,7 +26,8 @@ export default{
 	components:{
 		HomeHeader,
 		HomeTab,
-		HomeGoods
+		HomeGoods,
+		HomeShopcart
 	},
 	//组件方法对象
 	methods:{
