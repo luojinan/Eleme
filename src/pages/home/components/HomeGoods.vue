@@ -2,7 +2,7 @@
 	<div class="home-goods">
 		<div class="home-goods_menu" ref="meunWrapper">
 			<ul>
-				<li class="home-goods_menuitem" :class="{'current':currentIndex===index}" v-for="(item,index) in goods">
+				<li class="home-goods_menuitem" @click="_handleClickMenu(index)" :class="{'current':currentIndex===index}" v-for="(item,index) in goods">
 					{{item.name}}
 				</li>
 			</ul>
@@ -62,43 +62,52 @@ export default {
 	},
 	methods:{
 		_calculateHight(){
-		this.$nextTick(() => {
-			//挂载滚动插件
-			this.meunScroll = new BScroll(this.$refs.meunWrapper)
-			this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{probeType:3})
+			this.$nextTick(() => {
+				//挂载滚动插件
+				this.meunScroll = new BScroll(this.$refs.meunWrapper)
+				this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{probeType:3})
 
-			//测试获取的DOM是不是有数据的DOM
-			//console.log('测试获取的DOM是不是有数据的DOM'+this.$refs.meunWrapper.innerHTML)
-			//利用better-scroll的方法获取滚动值
-			this.foodsScroll.on('scroll',(pos) => {
-				this.scrollY = Math.abs(Math.round(pos.y))	//pso.y获取滚动值，取整取正
-				//console.log(this.scrollY)	//测试一下
-				//console.log(this.currentIndex)
-			})
+				//测试获取的DOM是不是有数据的DOM
+				//console.log('测试获取的DOM是不是有数据的DOM'+this.$refs.meunWrapper.innerHTML)
+				//利用better-scroll的方法获取滚动值
+				this.foodsScroll.on('scroll',(pos) => {
+					this.scrollY = Math.abs(Math.round(pos.y))	//pso.y获取滚动值，取整取正
+					//console.log(this.scrollY)	//测试一下
+					//console.log(this.currentIndex)
+				})
 
-		
-			//获取一个类的li高度
-			//获取DOM元素className
-			let foodWrapper = this.$refs.foodsWrapper
-			let foodlist = this.$refs.foodsListHook
-			//console.log('挂载完成后执行计算方法')
-			//把高度push进从0开始的数组
-			let height = 0;
-			this.heightList.push(height);
-			//console.log('输出默认数组的第一项'+this.heightList.length)
-			///console.log('能获取到DOM右侧整个的内容'+foodlist)
-			//获取到DOM，div里面有ul没有li，即数据没有？
-			//console.log(this.goods)
-			//console.log('右侧DOM有'+foodlist+'个')
-			for(let i=0; i < this.goods.length; i++){
-				//DOM的方法clientHeight获取高度
-				height += foodlist[i].clientHeight;
+			
+				//获取一个类的li高度
+				//获取DOM元素className
+				let foodWrapper = this.$refs.foodsWrapper
+				let foodlist = this.$refs.foodsListHook
+				//console.log('挂载完成后执行计算方法')
+				//把高度push进从0开始的数组
+				let height = 0;
 				this.heightList.push(height);
-				console.log(height)
-			}
-			//测试一下
-			//console.log(this.heightList);
-		})
+				//console.log('输出默认数组的第一项'+this.heightList.length)
+				///console.log('能获取到DOM右侧整个的内容'+foodlist)
+				//获取到DOM，div里面有ul没有li，即数据没有？
+				//console.log(this.goods)
+				//console.log('右侧DOM有'+foodlist+'个')
+				for(let i=0; i < this.goods.length; i++){
+					//DOM的方法clientHeight获取高度
+					height += foodlist[i].clientHeight;
+					this.heightList.push(height);
+					console.log(height)
+				}
+				//测试一下
+				//console.log(this.heightList);
+			})
+		},
+		//点击联动方法
+		_handleClickMenu(index){
+			//获取到点击dom的li序列
+			console.log('输出点击dom的序列为：'+index)
+			//获取右侧的大类的dom
+			let el = this.$refs.foodsListHook[index]
+			//使用better-scroll方法滚动到dom
+			this.foodsScroll.scrollToElement(el,300)
 		}
 	},
 	computed:{
@@ -115,6 +124,7 @@ export default {
   			return 0	//默认处于第一个序列
   		}
   	}
+/********************数据还没获取到，失败的操作dom******************************/
 	/*methods:{
 		//获取DOM高度并赋值给变量
 		_calculateHight(){
