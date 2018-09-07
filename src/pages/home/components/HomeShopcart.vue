@@ -2,7 +2,7 @@
 	<div class="home-shopcart">
 		<div class="home-shopcart_content">
 			<div class="home-shopcart_left">
-				<div class="home-shopcart_left--logowrapper">
+				<div class="home-shopcart_left--logowrapper" @click="_handleCartlogo">
 					<div class="home-shopcart_left--logo" :class="{'home-shopcart_left--logo--heightLight':this.selectFoods.length > 0}">车</div>
 					<div class="home-shopcart_left--redpoint" v-show="this.selectFoods.length > 0">{{foodCount}}</div>
 				</div>
@@ -19,12 +19,35 @@
 				</div>
 			</div>
 		</div>
+		<!--详情页-->
+		<div class="home-shopcart_list" v-show="listShow">
+			<div class="home-shopcart_header">
+				<h1 class="home-shopcart_header--title">购物车</h1>
+				<span class="home-shopcart_header--empty">清空</span>
+			</div>
+			<div class="home-shopcart_detail">
+				<ul>
+					<li class="home-shopcart_detail--food" v-for="item in selectFoods">
+						<span class="home-shopcart_detail--name">{{item.name}}</span>
+						<span class="home-shopcart_detail--price">￥{{item.price}}</span>
+						<shopcart-control></shopcart-control>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
+import ShopcartControl from '@/common/ShopcartControl'
 export default {
 	name:'HomeShopcart',
+	data(){
+		return {
+			//折叠变量，点击只是操作打开，计算属性关闭
+			fold: true
+		}
+	},
 	props:{
 		//配送费
 		deliveryPrice:{
@@ -42,10 +65,17 @@ export default {
 			}
 		},
 	},
+	components:{
+		ShopcartControl
+	},
 	methods:{
 		//购物车里有商品
 		haveFoods(){
 			return this.selectFoods.length > 0
+		},
+		_handleCartlogo(){
+			if(this.selectFoods.length===0){return ;}
+			this.fold = !this.fold ;
 		}
 	},
 	//计算属性
@@ -88,6 +118,15 @@ export default {
 			}else{
 				return 'home-shopcart_right--pay--enough'
 			}
+		},
+		//购物车详情页
+		listShow(){
+			if(this.selectFoods.length===0){
+				this.fold = true ;
+				return false ;
+			}
+			let show = !this.fold;
+			return show;
 		}
 	}
 }
@@ -197,5 +236,58 @@ export default {
 	.home-shopcart_right--pay--enough{
 		background-color: #00b43c;
 		color: #fff;
+	}
+/*购物车详情页样式*/
+	.home-shopcart_list{
+		position: absolute;
+		bottom:48px;
+		left: 0;
+		width: 100%;
+		z-index: -1;
+	}
+	.home-shopcart_header{
+		height: 40px;
+		line-height: 40px;
+		padding: 0 18px;
+		background-color: #f3f5f7;
+		border-bottom: 1px solid rgba(7,17,27,0.1);
+	}
+	.home-shopcart_header--title{
+		float: left;
+		font-size: 14px;
+		color: rgb(7,17,27);
+	}
+	.home-shopcart_header--empty{
+		float: right;
+		font-size: 12px;
+		color: rgb(0,160,220);
+	}
+
+	.home-shopcart_detail{
+		padding: 0 18px;
+		max-height: 217px;
+		overflow: hidden;
+		background-color: #fff;
+	}
+	
+	.home-shopcart_detail--food{
+		position: relative;
+		padding: 12px 0;
+		box-sizing: border-box;
+		border-bottom: 1px solid rgba(7,17,27,0.1);	
+	}
+	.home-shopcart_detail--name{
+		font-size: 14px;
+		line-height: 24px;
+		color: rgb(7,17,27);
+	}
+	.home-shopcart_detail--price{
+		position: absolute;
+		right: 90px;
+		bottom: 12px;
+		font-size: 14px;
+		line-height: 24px;
+		font-weight: 700;
+		color: rgb(240,20,20);
 	}
 </style>
