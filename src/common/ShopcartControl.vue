@@ -1,13 +1,18 @@
 <template>
 	<div class="shopcart-control">
-			<div class="shopcart-control_decrease" v-show="foods.count>0" @click="_handleDecrease">-</div>
-			<div class="shopcart-control_count" v-show="foods.count>0">{{foods.count}}</div>
-			<div class="shopcart-control_add" @click="_handleAdd">+</div>
-		</div>
+		<move-animation>
+			<div class="shopcart-control_decrease" v-show="foods.count>0" @click="_handleDecrease">
+				<div calss="rotate-animation">-</div>
+			</div>
+		</move-animation>
+		<div class="shopcart-control_count" v-show="foods.count>0">{{foods.count}}</div>	
+		<div class="shopcart-control_add" @click="_handleAdd">+</div>
+	</div>
 </template>
 
 <script>
 import Vue from 'vue'
+import MoveAnimation from '@/common/fade/MoveAnimation'
 
 export default {
 	name:'ShopcartControl',
@@ -15,6 +20,9 @@ export default {
 		foods:{
 			type:Object,
 		}
+	},
+	components:{
+		MoveAnimation,
 	},
 	methods:{
 		_handleAdd(){
@@ -58,5 +66,10 @@ export default {
 		line-height: 24px;
 		text-align: center;
 	}
-	
+	/*平移渐隐渐现 动画效果*/
+	.shopcart-control_decrease{
+		transition: all 0.4 linear ;
+		opacity: 1;
+	}
+	/*怎么加2个动画啊，再加一个旋转动画（与平移冲突）*/
 </style>

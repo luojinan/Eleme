@@ -289,7 +289,7 @@ export default {
 	/*无效？？？*/
 	.home-goods_foods--cartcontrol{
 		position: absolute;
-		right: 0;
+		right: 12px;
 		bottom: 2px;
 		
 	}
