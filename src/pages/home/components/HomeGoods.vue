@@ -27,6 +27,11 @@
 									<span class="home-goods_foods--newprice">￥{{foods.price}}</span>
 									<span class="home-goods_foods--oldprice" v-show="foods.oldPrice">￥{{foods.oldPrice}}</span>
 								</div>
+								
+							</div>
+							<!--添加商品数量，小球组件-->
+							<div class="home-goods_foods--cartcontrol">
+								<shopcart-control :foods="foods"></shopcart-control>
 							</div>
 						</li>
 					</ul>
@@ -39,9 +44,13 @@
 <script>
 //引入滚动插件
 import BScroll from 'better-scroll'
+import ShopcartControl from '@/common/ShopcartControl'
 
 export default {
 	name:'HomeGoods',
+	components:{
+		ShopcartControl,
+	},
 	props:{
 		goods:{
 			type:Array
@@ -235,8 +244,10 @@ export default {
 		background-color: #f3f5f7;
 	}
 	.home-goods_foods--item{
+		position: relative;
 		display: flex;
-		margin:18px;
+		padding:18px;
+		box-sizing: border-box;
 		border-bottom: 1px solid rgba(7,17,27,0.1)	/*怎么通过伪类选择器使li最后一个不加border啊？？？*/
 	}
 	.home-goods_foods--icon{
@@ -273,6 +284,14 @@ export default {
 		font-size: 10px;
 		color: rgb(147,153,159);
 		text-decoration: line-through;
+	}
+	/*添加商品小球组件，定位样式*/
+	/*无效？？？*/
+	.home-goods_foods--cartcontrol{
+		position: absolute;
+		right: 0;
+		bottom: 2px;
+		
 	}
 /*类型滚动到样式*/
 	.current{

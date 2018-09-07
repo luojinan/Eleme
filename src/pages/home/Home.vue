@@ -3,7 +3,7 @@
 		<home-header :seller="seller"></home-header>
 		<home-tab></home-tab>
 		<home-goods :seller="seller" :goods="goods"></home-goods>
-		<home-shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></home-shopcart>
+		<home-shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></home-shopcart>
 	</div>
 </template>
 
@@ -21,6 +21,20 @@ export default{
 		return {
 			seller:{},
 			goods:[],
+		}
+	},
+	computed:{
+		//计算属性传值给子组件
+		selectFoods(){
+			let foods = [] ;
+			this.goods.forEach((good) => {
+				good.foods.forEach((food) => {
+					if(food.count){
+						foods.push(food)
+					}
+				})
+			}) ;
+			return foods ;
 		}
 	},
 	components:{

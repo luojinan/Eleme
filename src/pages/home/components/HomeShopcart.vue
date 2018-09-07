@@ -38,10 +38,7 @@ export default {
 		selectFoods:{
 			type: Array,
 			default(){	//默认值是方法，return
-				return [{
-					count:2,
-					price:10
-				}]
+				return []
 			}
 		},
 	},
