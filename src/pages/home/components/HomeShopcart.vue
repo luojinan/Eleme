@@ -1,4 +1,5 @@
 <template>
+<div>
 	<div class="home-shopcart">
 		<div class="home-shopcart_content">
 			<div class="home-shopcart_left">
@@ -13,7 +14,7 @@
 					另需配送费￥{{deliveryPrice}}元
 				</div>
 			</div>
-			<div class="home-shopcart_right">
+			<div class="home-shopcart_right" @click="_handelPay">
 				<div class="home-shopcart_right--pay" :class="payClass">
 					{{payDesc}}
 				</div>
@@ -23,23 +24,33 @@
 		<div class="home-shopcart_list" v-show="listShow">
 			<div class="home-shopcart_header">
 				<h1 class="home-shopcart_header--title">购物车</h1>
-				<span class="home-shopcart_header--empty">清空</span>
+				<span class="home-shopcart_header--empty" @click="_handleClean">清空</span>
 			</div>
-			<div class="home-shopcart_detail">
+			<div class="home-shopcart_detail" ref="shopcartConent">
 				<ul>
 					<li class="home-shopcart_detail--food" v-for="item in selectFoods">
 						<span class="home-shopcart_detail--name">{{item.name}}</span>
 						<span class="home-shopcart_detail--price">￥{{item.price}}</span>
-						<shopcart-control></shopcart-control>
+						<div class="home-shopcart_detail--count">
+							<shopcart-control :foods="item"></shopcart-control>
+						</div>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
+	<fade-animation>
+		<div class="home-shopcart_background" v-show="listShow" @click="_handlefold">	
+		</div>
+	</fade-animation>
+</div>
 </template>
 
 <script>
 import ShopcartControl from '@/common/ShopcartControl'
+import BScroll from 'better-scroll'
+import FadeAnimation from '@/common/fade/FadeAnimation'
+
 export default {
 	name:'HomeShopcart',
 	data(){
@@ -66,7 +77,8 @@ export default {
 		},
 	},
 	components:{
-		ShopcartControl
+		ShopcartControl,
+		FadeAnimation
 	},
 	methods:{
 		//购物车里有商品
@@ -76,6 +88,26 @@ export default {
 		_handleCartlogo(){
 			if(this.selectFoods.length===0){return ;}
 			this.fold = !this.fold ;
+		},
+		//清空购物车
+		_handleClean(){
+			//遍历循环，把数量改就可以了,即单项把各自的数来那个改了，而不是把整个对象数组删了
+			this.selectFoods.forEach((item) =>{
+				item.count = 0
+			})
+			console.log('点击清空按钮')
+		},
+		//点击背景收起购物车
+		_handlefold(){
+			this.fold = true
+		},
+		//点击结算按钮
+		_handelPay(){
+			if(this.totalPrice < this.minPrice){
+				return ;
+			}else{
+				window.alert(`请支付￥${this.totalPrice}元`)
+			}
 		}
 	},
 	//计算属性
@@ -126,6 +158,11 @@ export default {
 				return false ;
 			}
 			let show = !this.fold;
+			if (show) {
+				this.$nextTick(()=>{
+					this.shopcartScroll = new BScroll(this.$refs.shopcartConent)
+				})
+			}
 			return show;
 		}
 	}
@@ -237,6 +274,16 @@ export default {
 		background-color: #00b43c;
 		color: #fff;
 	}
+/*打开详情页的背景样式*/
+	.home-shopcart_background{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(7,17,27,0.6);
+		z-index: 40;
+	}
 /*购物车详情页样式*/
 	.home-shopcart_list{
 		position: absolute;
@@ -262,7 +309,7 @@ export default {
 		font-size: 12px;
 		color: rgb(0,160,220);
 	}
-
+	/*详情页内容样式*/
 	.home-shopcart_detail{
 		padding: 0 18px;
 		max-height: 217px;
@@ -290,4 +337,10 @@ export default {
 		font-weight: 700;
 		color: rgb(240,20,20);
 	}
+	.home-shopcart_detail--count{
+		position: absolute;
+		right: 0;
+		bottom: 6px;
+	}
+
 </style>
