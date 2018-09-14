@@ -124,7 +124,6 @@ export default {
 		},
 		//点击商品详情页，给父组件传序号
 		_handleDetail(food){
-			console.log(food)
 			this.$emit('getfood',food);
 		}
 	},

@@ -9,7 +9,7 @@
 			:minPrice="seller.minPrice"
 		></home-shopcart>
 		<right-open>
-			<goods-detail v-show="showDetail" :selectFood="selectFood"></goods-detail>
+			<goods-detail v-show="showDetail" @closeDetail="closeDetail" :selectFood="selectFood"></goods-detail>
 		</right-open>
 	</div>
 </template>
@@ -81,6 +81,9 @@ export default{
 			//父子组件传值，还可以用于事件触发
 			this.showDetail = true
 		},
+		closeDetail(){
+			this.showDetail = false
+		}
 		
 	},
 	//生命周期钩子，执行ajax方法
