@@ -22,6 +22,7 @@ export default new Router({
       path: '/merchant',
       name: 'Merchant',
       component: Merchant
-    }
+    },
+    
   ]
 })

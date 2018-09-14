@@ -12,7 +12,11 @@
 				<li v-for="item in goods" ref="foodsListHook">
 					<div class="home-goods_foods--title">{{item.name}}</div>
 					<ul >
-						<li class="home-goods_foods--item" v-for="foods in item.foods">
+						<li
+							@click="_handleDetail(foods)"
+							class="home-goods_foods--item" 
+							v-for="(foods,index) in item.foods"
+						>
 							<div class="home-goods_foods--icon">
 								<img weight="57" height="57" :src="foods.icon">
 							</div>
@@ -117,6 +121,11 @@ export default {
 			let el = this.$refs.foodsListHook[index]
 			//使用better-scroll方法滚动到dom
 			this.foodsScroll.scrollToElement(el,300)
+		},
+		//点击商品详情页，给父组件传序号
+		_handleDetail(food){
+			console.log(food)
+			this.$emit('getfood',food);
 		}
 	},
 	computed:{

@@ -2,8 +2,15 @@
 	<div class="home">
 		<home-header :seller="seller"></home-header>
 		<home-tab></home-tab>
-		<home-goods :seller="seller" :goods="goods"></home-goods>
-		<home-shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></home-shopcart>
+		<home-goods :seller="seller" :goods="goods"  @getfood="_getfood"></home-goods>
+		<home-shopcart 
+			:selectFoods="selectFoods" 
+			:deliveryPrice="seller.deliveryPrice" 
+			:minPrice="seller.minPrice"
+		></home-shopcart>
+		<right-open>
+			<goods-detail v-show="showDetail" :selectFood="selectFood"></goods-detail>
+		</right-open>
 	</div>
 </template>
 
@@ -14,6 +21,8 @@ import HomeHeader from './components/HomeHeader'
 import HomeTab from './components/HomeTab'
 import HomeGoods from './components/HomeGoods'
 import HomeShopcart from './components/HomeShopcart'
+import GoodsDetail from '@/pages/goods/GoodsDetail'
+import RightOpen from '@/common/fade/RightOpen'
 
 export default{
 	name:'Home',
@@ -21,6 +30,8 @@ export default{
 		return {
 			seller:{},
 			goods:[],
+			selectFood:{},
+			showDetail:false
 		}
 	},
 	computed:{
@@ -35,13 +46,17 @@ export default{
 				})
 			}) ;
 			return foods ;
-		}
+		},
+		
 	},
 	components:{
 		HomeHeader,
 		HomeTab,
 		HomeGoods,
-		HomeShopcart
+		HomeShopcart,
+		GoodsDetail,
+		RightOpen
+
 	},
 	//组件方法对象
 	methods:{
@@ -59,7 +74,14 @@ export default{
 				this.seller = data.seller	//获取到的数据赋值给组件内数据data，或传入子组件
 				this.goods = data.goods
 			}
-		}
+		},
+		//获取点击的商品数据
+		_getfood(food){			
+			this.selectFood = food
+			//父子组件传值，还可以用于事件触发
+			this.showDetail = true
+		},
+		
 	},
 	//生命周期钩子，执行ajax方法
 	created(){
