@@ -34,7 +34,16 @@
 				<p>{{selectFood.info}}</p>
 			</div>
 			<split></split>
-
+		<!--选项卡-->
+			<div class="goods-detail_rating">
+				<h1>商品评价</h1>
+				<rating-selected
+					:selectType="selectType"
+					:onlyContent="onlyContent"
+					:desc="desc"
+					:ratings="selectFood.ratings"
+					></rating-selected>
+			</div>
 			
 
 		</div>
@@ -45,7 +54,13 @@
 import BScroll from "better-scroll"
 import Vue from 'vue'
 import ShopcartControl from "@/common/ShopcartControl"
+import RatingSelected from "@/common/RatingSelected"
 import split from "@/common/split"
+
+//设置状态码
+//const POSITIVE = 0 ;
+//const NEGATIVE = 1;
+const ALL = 2;
 
 export default {
 	name:'GoodsDatil',
@@ -54,8 +69,21 @@ export default {
 			type: Object
 		}
 	},
+	data(){
+		return {
+			//设置传入选项卡的内容，且这些内容对控制数据也有用
+			selectType: ALL,	//当前选择哪一项
+			onlyContent:true,	//筛选功能是否只显示有美容 的评价
+			desc:{				//选项卡的内容
+				all:'全部',
+				positive:'推荐',
+				negative:'吐槽'
+			}
+		}
+	},
 	components:{
 		ShopcartControl,
+		RatingSelected,
 		split
 	},
 	methods:{
@@ -197,5 +225,15 @@ export default {
 		padding: 0 8px;
 		font-size: 12px;
 		color: rgb(77,85,93);
+	}
+/*商品评价样式整体和头部样式*/
+	.goods-detail_rating{
+		padding-top: 18px;
+	}
+	.goods-detail_rating h1{
+		line-height: 14px;
+		margin-left: 18px;
+		font-size: 14px;
+		color: rgb(7,17,27);
 	}
 </style>
