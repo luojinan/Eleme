@@ -7,13 +7,13 @@
 	    >商品
 		</router-link>
 		<router-link 
-	    	to="/evaluate"
+	    	to="/home/homecomment"
 	    	tag="div"
 	    	class="tabheader-item"
 	    >评价
 		</router-link>
 		<router-link 
-	    	to="/merchant"
+	    	to="/home/homesell"
 	    	tag="div"
 	    	class="tabheader-item"
 	    >商家

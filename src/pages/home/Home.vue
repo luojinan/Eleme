@@ -2,7 +2,9 @@
 	<div class="home">
 		<home-header :seller="seller"></home-header>
 		<home-tab></home-tab>
+
 		<home-goods :seller="seller" :goods="goods"  @getfood="_getfood"></home-goods>
+		
 		<home-shopcart 
 			:selectFoods="selectFoods" 
 			:deliveryPrice="seller.deliveryPrice" 
