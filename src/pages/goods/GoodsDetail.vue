@@ -57,7 +57,9 @@
 								<p>{{item.username}}</p>
 								<img :src="item.avatar" width="12" height="12">
 							</div>
-							<div class="goods-detail_rating--time">{{item.rateTime}}</div>
+							<div class="goods-detail_rating--time">
+								{{item.rateTime | formatDate}}
+							</div>
 							<p>
 								<span 
 									class="goods-detail_rating--iflike"
@@ -85,10 +87,11 @@ import Vue from 'vue'
 import ShopcartControl from "@/common/ShopcartControl"
 import RatingSelected from "@/common/RatingSelected"
 import split from "@/common/split"
+import {formatDates} from "@/common/js/date"
 
 //设置状态码
-//const POSITIVE = 0 ;
-//const NEGATIVE = 1;
+const POSITIVE = 0 ;
+const NEGATIVE = 1;
 const ALL = 2;
 
 export default {
@@ -102,7 +105,7 @@ export default {
 		return {
 			//设置传入选项卡的内容，且这些内容对控制数据也有用
 			selectType: ALL,	//当前选择哪一项
-			onlyContent:true,	//筛选功能是否只显示有美容 的评价
+			onlyContent:false,	//筛选功能是否只显示有美容 的评价
 			desc:{				//选项卡的内容
 				all:'全部',
 				positive:'推荐',
@@ -154,6 +157,16 @@ export default {
 			}
 		}
 	},
+	//过滤器，对数据进行格式化用
+	filters:{
+		formatDate(item){
+			let date = new Date(item);	//把时间代码编译成正确时间
+			//console.log(date);	//测试一下格式化后的时间是什么样子的
+			//引入js模块，可与过滤器同名，过滤器不是方法不冲突
+			//这个模块传入格式化后的数据和需要的格式，使用正则表达式替换输出
+			return formatDates(date,'yyyy-MM-dd hh:mm')
+		}
+	},
 	created(){
 		this.$nextTick(()=> {
 				if(!this.scroll){
@@ -170,9 +183,11 @@ export default {
 <style>
 /*页面外部布局*/
 	.goods-detail{
-		position: absolute;
+		position: fixed;
 		/*不知道为什么定位了top，之后定位不了bottom*/
 		bottom:48px;
+		left: 0;
+		right: 0;
 		top: 0;
 		overflow: hidden;
 		width: 100%;
@@ -290,7 +305,7 @@ export default {
 		font-size: 14px;
 		color: rgb(7,17,27);
 	}
-/*商品内容样式*/
+/*商品评价内容样式*/
 	.goods-detail_rating--content{
 		padding: 0 18px;
 	}
