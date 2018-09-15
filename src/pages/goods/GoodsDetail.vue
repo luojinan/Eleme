@@ -42,7 +42,25 @@
 					:onlyContent="onlyContent"
 					:desc="desc"
 					:ratings="selectFood.ratings"
+					@changeType="changeType"
+					@changeSwitch="changeSwitch"
 					></rating-selected>
+				<div class="goods-detail_rating--content">
+					<ul v-show="selectType.ratings && selectType.ratings.length">
+						<li v-for="item of selectType.ratings" class="">
+							<div class="goods-detail_rating--user">
+								<span>{{item.username}}</span>
+								<img src="item.avatat" width="12" height="12">
+							</div>
+							<div class="goods-detail_rating--time">{{item.rateTime}}</div>
+							<p><span>{{item.text}}</span></p>
+						</li>
+					</ul>
+					<div v-show="!selectType.ratings || selectType.ratings.length===0">
+						没有评价
+					</div>
+				</div>
+
 			</div>
 			
 
@@ -100,8 +118,15 @@ export default {
 					this.scroll = new BScroll(this.$refs.detailScroll)
 				}
 			})
-		}
-
+		},
+		//自组件点击，修改状态码
+		changeSwitch(switchType){
+			this.onlyContent = !switchType;
+		},
+		changeType(type){
+			this.selectType = type ;
+		},
+		
 	},
 	watch:{
 		selectFood:'_myScroll'
