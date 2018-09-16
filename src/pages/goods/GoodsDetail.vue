@@ -101,18 +101,18 @@ export default {
 			type: Object
 		}
 	},
-	data(){
-		return {
-			//设置传入选项卡的内容，且这些内容对控制数据也有用
-			selectType: ALL,	//当前选择哪一项
-			onlyContent:false,	//筛选功能是否只显示有美容 的评价
-			desc:{				//选项卡的内容
-				all:'全部',
-				positive:'推荐',
-				negative:'吐槽'
+		data(){
+			return {
+				//设置传入选项卡的内容，且这些内容对控制数据也有用
+				selectType: ALL,	//当前选择哪一项
+				onlyContent:false,	//筛选功能是否只显示有美容 的评价
+				desc:{				//选项卡的内容
+					all:'全部',
+					positive:'推荐',
+					negative:'吐槽'
+				}
 			}
-		}
-	},
+		},
 	components:{
 		ShopcartControl,
 		RatingSelected,

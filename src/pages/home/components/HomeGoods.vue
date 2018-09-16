@@ -57,7 +57,6 @@
 
 <script>
 //引入滚动插件
-import axios from 'axios'
 import BScroll from 'better-scroll'
 import HomeShopcart from './HomeShopcart'
 import GoodsDetail from '@/pages/goods/GoodsDetail'
@@ -72,40 +71,24 @@ export default {
 		GoodsDetail,
 		RightOpen
 	},
+	props:{
+		seller:{
+			type:Object
+		},
+		goods:{
+			type:Array
+		}
+	},
 	data(){
 		return{
 			heightList:[],
 			scrollY:0,
-			seller:{},
-			goods:[],
 			selectFood:{},
 			showDetail:false
 		} 
 	},
-	watch:{
-		//监听到传值进来后，挂载滚动插件，操作DOM，获取高度等
-		goods:'_calculateHight'
-	},
-	methods:{
-		//axios获取json数据方法
-		getHomeInfo(){
-			axios.get('/api/data.json').then(this.getHomeInfoSucc)
-		},
-		//成功获取json数据的回调函数
-		getHomeInfoSucc(res){
-			//测试一下
-			//console.log(res.data.goods)
-			const data = res.data	//减少json数据书写的层级
-			//判断数据存在的情况下执行操作数据赋值
-			if(res.data){
-				this.seller = data.seller	//获取到的数据赋值给组件内数据data，或传入子组件
-				this.goods = data.goods
-			}
-		},
-
-		
-		_calculateHight(){
-			this.$nextTick(() => {
+	created(){
+		this.$nextTick(() => {
 				//挂载滚动插件
 				this.meunScroll = new BScroll(this.$refs.meunWrapper)
 				this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{probeType:3})
@@ -118,7 +101,12 @@ export default {
 					//console.log(this.scrollY)	//测试一下
 					//console.log(this.currentIndex)
 				})
-
+			this._calculateHight()	//没有数据进来？？？
+		}) 
+	},
+	methods:{
+	
+		_calculateHight(){
 			
 				//获取一个类的li高度
 				//获取DOM元素className
@@ -141,7 +129,6 @@ export default {
 				}
 				//测试一下
 				//console.log(this.heightList);
-			})
 		},
 		//点击联动方法
 		_handleClickMenu(index){
@@ -187,12 +174,6 @@ export default {
   			return 0	//默认处于第一个序列
   		}
   	},
-	//生命周期钩子，执行ajax方法
-	created(){
-			this.getHomeInfo()
-		//console.log('获取数据的异步下面执行')
-		//console.log(this.goods)
-	}
 
 /********************数据还没获取到，失败的操作dom******************************/
 	/*methods:{

@@ -2,7 +2,7 @@
 	<div class="home">
 		<home-header :seller="seller"></home-header>
 		<home-tab></home-tab>
-		<router-view/>
+		<router-view :seller="seller" :goods="goods"/>
 	</div>
 </template>
 
@@ -16,7 +16,9 @@ export default{
 	name:'Home',
 	data:function(){
 		return {
-			seller:{}
+			seller:{},
+			goods:[]
+
 		}
 	},
 	components:{
@@ -36,6 +38,7 @@ export default{
 			//判断数据存在的情况下执行操作数据赋值
 			if(res.data){
 				this.seller = data.seller	//获取到的数据赋值给组件内数据data，或传入子组件
+				this.goods = data.goods
 			}
 		},
 	},
