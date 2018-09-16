@@ -1,7 +1,7 @@
 <template>
 	<div class="home-tab">
 		<router-link 
-	    	to="/"
+	    	to="/home/homegoods"
 	    	tag="div"
 	    	class="tabheader-item"
 	    >商品

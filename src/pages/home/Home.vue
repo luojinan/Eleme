@@ -2,17 +2,7 @@
 	<div class="home">
 		<home-header :seller="seller"></home-header>
 		<home-tab></home-tab>
-
-		<home-goods :seller="seller" :goods="goods"  @getfood="_getfood"></home-goods>
-		
-		<home-shopcart 
-			:selectFoods="selectFoods" 
-			:deliveryPrice="seller.deliveryPrice" 
-			:minPrice="seller.minPrice"
-		></home-shopcart>
-		<right-open>
-			<goods-detail v-show="showDetail" @closeDetail="closeDetail" :selectFood="selectFood"></goods-detail>
-		</right-open>
+		<router-view/>
 	</div>
 </template>
 
@@ -21,46 +11,18 @@
 import axios from 'axios'
 import HomeHeader from './components/HomeHeader'
 import HomeTab from './components/HomeTab'
-import HomeGoods from './components/HomeGoods'
-import HomeShopcart from './components/HomeShopcart'
-import GoodsDetail from '@/pages/goods/GoodsDetail'
-import RightOpen from '@/common/fade/RightOpen'
 
 export default{
 	name:'Home',
 	data:function(){
 		return {
-			seller:{},
-			goods:[],
-			selectFood:{},
-			showDetail:false
+			seller:{}
 		}
-	},
-	computed:{
-		//计算属性传值给子组件
-		selectFoods(){
-			let foods = [] ;
-			this.goods.forEach((good) => {
-				good.foods.forEach((food) => {
-					if(food.count){
-						foods.push(food)
-					}
-				})
-			}) ;
-			return foods ;
-		},
-		
 	},
 	components:{
 		HomeHeader,
 		HomeTab,
-		HomeGoods,
-		HomeShopcart,
-		GoodsDetail,
-		RightOpen
-
 	},
-	//组件方法对象
 	methods:{
 		//axios获取json数据方法
 		getHomeInfo(){
@@ -74,19 +36,8 @@ export default{
 			//判断数据存在的情况下执行操作数据赋值
 			if(res.data){
 				this.seller = data.seller	//获取到的数据赋值给组件内数据data，或传入子组件
-				this.goods = data.goods
 			}
 		},
-		//获取点击的商品数据
-		_getfood(food){			
-			this.selectFood = food
-			//父子组件传值，还可以用于事件触发
-			this.showDetail = true
-		},
-		closeDetail(){
-			this.showDetail = false
-		}
-		
 	},
 	//生命周期钩子，执行ajax方法
 	created(){

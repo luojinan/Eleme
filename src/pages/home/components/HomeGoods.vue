@@ -1,4 +1,5 @@
 <template>
+<div>
 	<div class="home-goods">
 		<div class="home-goods_menu" ref="meunWrapper">
 			<ul>
@@ -43,30 +44,42 @@
 			</ul>
 		</div>
 	</div>
+	<home-shopcart 
+			:selectFoods="selectFoods" 
+			:deliveryPrice="seller.deliveryPrice" 
+			:minPrice="seller.minPrice"
+		></home-shopcart>
+	<right-open>
+			<goods-detail v-show="showDetail" @closeDetail="closeDetail" :selectFood="selectFood"></goods-detail>
+	</right-open>
+</div>
 </template>
 
 <script>
 //引入滚动插件
+import axios from 'axios'
 import BScroll from 'better-scroll'
+import HomeShopcart from './HomeShopcart'
+import GoodsDetail from '@/pages/goods/GoodsDetail'
+import RightOpen from '@/common/fade/RightOpen'
 import ShopcartControl from '@/common/ShopcartControl'
 
 export default {
 	name:'HomeGoods',
 	components:{
 		ShopcartControl,
-	},
-	props:{
-		goods:{
-			type:Array
-		},
-		seller:{
-			type:Object
-		}
+		HomeShopcart,
+		GoodsDetail,
+		RightOpen
 	},
 	data(){
 		return{
 			heightList:[],
-			scrollY:0
+			scrollY:0,
+			seller:{},
+			goods:[],
+			selectFood:{},
+			showDetail:false
 		} 
 	},
 	watch:{
@@ -74,6 +87,23 @@ export default {
 		goods:'_calculateHight'
 	},
 	methods:{
+		//axios获取json数据方法
+		getHomeInfo(){
+			axios.get('/api/data.json').then(this.getHomeInfoSucc)
+		},
+		//成功获取json数据的回调函数
+		getHomeInfoSucc(res){
+			//测试一下
+			//console.log(res.data.goods)
+			const data = res.data	//减少json数据书写的层级
+			//判断数据存在的情况下执行操作数据赋值
+			if(res.data){
+				this.seller = data.seller	//获取到的数据赋值给组件内数据data，或传入子组件
+				this.goods = data.goods
+			}
+		},
+
+		
 		_calculateHight(){
 			this.$nextTick(() => {
 				//挂载滚动插件
@@ -124,10 +154,26 @@ export default {
 		},
 		//点击商品详情页，给父组件传序号
 		_handleDetail(food){
-			this.$emit('getfood',food);
-		}
+			this.selectFood = food
+			this.showDetail = true
+		},
+		closeDetail(){
+			this.showDetail = false
+		},
 	},
 	computed:{
+		//计算属性传值给子组件
+		selectFoods(){
+			let foods = [] ;
+			this.goods.forEach((good) => {
+				good.foods.forEach((food) => {
+					if(food.count){
+						foods.push(food)
+					}
+				})
+			}) ;
+			return foods ;
+		},
   		//判断滚动值是在那一个序列中，用在:class的li上
   		currentIndex(){
   			//使用循环来逐一判断
@@ -140,7 +186,14 @@ export default {
   			}
   			return 0	//默认处于第一个序列
   		}
-  	}
+  	},
+	//生命周期钩子，执行ajax方法
+	created(){
+			this.getHomeInfo()
+		//console.log('获取数据的异步下面执行')
+		//console.log(this.goods)
+	}
+
 /********************数据还没获取到，失败的操作dom******************************/
 	/*methods:{
 		//获取DOM高度并赋值给变量

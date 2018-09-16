@@ -13,7 +13,7 @@ export default {
 <style>
 	.evaluate{
 		position: absolute;
-		top: 147px;
+		top: 175px;
 		bottom: 0;
 		left: 0;
 		overflow: hidden;
