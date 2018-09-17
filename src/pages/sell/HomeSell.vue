@@ -103,6 +103,25 @@ export default {
 				this.scroll.refresh();
 			}
 		},
+		//创建better-scroll，判断是否有
+		_picsScroll(){
+			//因为hidden了ul，所以这里还原它的宽度
+			if(this.seller.pics){
+				let picWidth = 120;
+				let margin = 6;
+				let width = (picWidth+margin)*this.seller.pics.length-margin;
+				//设置DOM的宽度
+				this.$refs.picsul.style.width = width+'px';
+				//此时better-scroll内容就被撑起来了
+				this.$nextTick(()=>{
+					//设置成横向滚动，且滚动不冲突
+					this.picsScroll = new BScroll(this.$refs.picsroll,{
+						scrollX: true,
+						eventPassthrough:'vertical'
+					})
+				})
+			}
+		},
 		//点击收藏按钮
 		handleFavorite(){
 			this.favorite=!this.favorite
@@ -116,28 +135,12 @@ export default {
 	},
 	mounted(){
 		this._initScroll();
-
-		//可能此时dom还没有，有bug再调整（做成方法，即watch又mounted）
-		//因为hidden了ul，所以这里还原它的宽度
-		if(this.seller.pics){
-			let picWidth = 120;
-			let margin = 6;
-			let width = (picWidth+margin)*this.seller.pics.length-margin;
-			//设置DOM的宽度
-			this.$refs.picsul.style.width = width+'px';
-			//此时better-scroll内容就被撑起来了
-			this.$nextTick(()=>{
-				//设置成横向滚动，且滚动不冲突
-				this.picsScroll = new BScroll(this.$refs.picsroll,{
-					scrollX: true,
-					eventPassthrough:'vertical'
-				})
-			})
-		}
+		this._picsScroll()
 	},
 	watch:{
 		'seller'(){
 			this._initScroll()
+			this._picsScroll()
 		}
 	}
 }

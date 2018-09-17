@@ -11,12 +11,23 @@
 import axios from 'axios'
 import HomeHeader from './components/HomeHeader'
 import HomeTab from './components/HomeTab'
+import {urlParse} from '@/common/js/url'
 
 export default{
 	name:'Home',
 	data:function(){
 		return {
-			seller:{},
+			seller:{
+				//id对象，回调函数
+				id:(()=>{
+					//获取hash的外部js模块方法
+					let queryParam = urlParse()
+					console.log('解析后的url'+queryParam.id)
+					return queryParam.id
+					//手动输入测试，获取到的是?id=12354&a=b，进行拆解使用
+					//不懂这种前端输入请求干嘛，不是应该重获段获取到hash，直接是相应页面吗
+				})()
+			},
 			goods:[]
 
 		}
@@ -33,7 +44,7 @@ export default{
 		//成功获取json数据的回调函数
 		getHomeInfoSucc(res){
 			//测试一下
-			//console.log(res.data.goods)
+			//console.log(res.data.seller)
 			const data = res.data	//减少json数据书写的层级
 			//判断数据存在的情况下执行操作数据赋值
 			if(res.data){
