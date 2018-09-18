@@ -191,11 +191,13 @@ export default {
 		top: 0;
 		overflow: hidden;
 		width: 100%;
-		height: 100%;
 		background-color: #fff;
 		/*动画效果设置*/
 		transition: all 0.2s linear;
 		transform: translate3d(0,0,0);
+	}
+	.goods-detail_content{
+
 	}
 /*商品介绍布局*/
 	.goods-detail_header{
@@ -313,6 +315,9 @@ export default {
 		position: relative;
 		padding: 16px 0;
 		border-bottom: 1px solid rgba(7,17,27,0.1);
+	}
+	.goods-detail_rating--item:last-child{
+		border-bottom: none;
 	}
 	.goods-detail_rating--user{
 		position: absolute;

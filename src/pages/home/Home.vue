@@ -2,7 +2,9 @@
 	<div class="home">
 		<home-header :seller="seller"></home-header>
 		<home-tab></home-tab>
-		<router-view :seller="seller" :goods="goods"/>
+		<keep-alive>
+			<router-view :seller="seller" :goods="goods"/>
+		</keep-alive>
 	</div>
 </template>
 

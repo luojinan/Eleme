@@ -9,36 +9,20 @@
 				{{item.description}}
 			</li>
 		</ul>
-		<gallary-title>商家公告</gallary-title>
+		
+		<!--假数据，测试滚动-->
+		<gallary-title>优惠信息</gallary-title>
+		<ul class="home-gallary_supports">
+			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
+				{{item.description}}
+			</li>
+		</ul><gallary-title>优惠信息</gallary-title>
+		<ul class="home-gallary_supports">
+			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
+				{{item.description}}
+			</li>
+		</ul>
 
-		<div class="home-gallary_title">
-			<div class="home-gallary_title--line"></div>
-			<div class="home-gallary_title--text">优惠信息</div>
-			<div class="home-gallary_title--line"></div>
-		</div>
-		<ul class="home-gallary_supports">
-			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
-				{{item.description}}
-			</li>
-		</ul><div class="home-gallary_title">
-			<div class="home-gallary_title--line"></div>
-			<div class="home-gallary_title--text">优惠信息</div>
-			<div class="home-gallary_title--line"></div>
-		</div>
-		<ul class="home-gallary_supports">
-			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
-				{{item.description}}
-			</li>
-		</ul><div class="home-gallary_title">
-			<div class="home-gallary_title--line"></div>
-			<div class="home-gallary_title--text">优惠信息</div>
-			<div class="home-gallary_title--line"></div>
-		</div>
-		<ul class="home-gallary_supports">
-			<li class="home-gallary_supports--item" v-if="seller.supports" v-for="(item,index) in seller.supports">
-				{{item.description}}
-			</li>
-		</ul>	
 
 		<div class="home-gallary_title">
 			<div class="home-gallary_title--line"></div>
@@ -46,7 +30,7 @@
 			<div class="home-gallary_title--line"></div>
 		</div>
 		<div class="home-gallary_bulletin">
-			<div calss="home-gallary_bulletin--text">{{seller.bulletin}}</div>
+			<div class="home-gallary_bulletin--text">{{seller.bulletin}}</div>
 		</div>
 		<span class="home-gallary_close" @click="handleGallaryClose">X</span>
 	</div>
@@ -79,17 +63,36 @@ export default{
 	methods:{
 		handleGallaryClose(){
 			this.$emit('close') //点击创建自定义事件，用于组件传值
+		},
+		//解决better-scroll的bug
+		_tryScroll(){
+			console.log('执行方法')
+			if(!this.scroll){
+				console.log('创建dom滚动')
+				this.$nextTick(()=>{
+					this.scroll = new BScroll(this.$refs.wrapper)
+				})	
+			}else{
+				console.log('刷新dom滚动')
+				this.scroll.refresh()
+			}
 		}
 	},
 	//挂载实例类插件，写生命周期中
 	mounted(){
-		this.scroll = new BScroll(this.$refs.wrapper)
+		console.log('生命周期')
+		this._tryScroll()	
 	},
+	watch:{
+		'seller'(){
+			console.log('2')
+			this._tryScroll()
+		}
+	}
 }
 </script>
 <style>
-	.home-gallary_wrapper{
-		
+	.home-gallary_wrapper{		
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -98,11 +101,13 @@ export default{
 		overflow: hidden;
 		background-color: rgba(7,17,27,0.8);
 
+
 		z-index: 99;
 	}
 	.home-gallary{
 		position: relative;	
-
+		padding-top:48px;
+		padding-bottom:120px;
 	}
 
 	.home-gallary_name{
@@ -115,7 +120,10 @@ export default{
 	.home-gallary_score{
 		margin-top: 16px;
 		line-height: 24px;
+		font-size: 24px;
+		font-weight: 700;
 		text-align: center;
+		color: rgb(255,153,0);
 	}
 /*公告列表样式*/
 	.home-gallary_supports{
@@ -140,11 +148,15 @@ export default{
 	.home-gallary_close{
 		display: block;
 		position: absolute;
-		bottom: 10px;
-		left: 45%;	/*无法居中，也无法计算 50%-16px */
-		width: 32px;
-		height: 32px;
+		bottom: 20px;
+		left: 40%;	/*无法居中，也无法计算 50%-16px */
+		width: 48px;
+		height: 48px;
+		line-height: 48px;
 		font-size: 32px;
-		color: rgba(255,255,255,0.5);
+		text-align: center;
+		border-radius: 50%;
+		background-color: rgba(255,255,255,0.3);
+		color: #fff;
 	}
 </style>

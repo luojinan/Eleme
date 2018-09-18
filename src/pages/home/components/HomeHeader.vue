@@ -35,7 +35,7 @@
 			<img :src="seller.avatar" width="100%" height="100%">
 		</div>
 		<fade-animation>
-			<home-gallary :seller="seller" v-show="isShow" @close="handelGallaryClose"></home-gallary>
+			<home-gallary :seller="seller" v-if="isShow" @close="handelGallaryClose"></home-gallary>
 		</fade-animation>
 	</div>
 </template>

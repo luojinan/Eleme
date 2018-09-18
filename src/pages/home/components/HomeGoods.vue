@@ -4,7 +4,7 @@
 		<div class="home-goods_menu" ref="meunWrapper">
 			<ul>
 				<li class="home-goods_menuitem" @click="_handleClickMenu(index)" :class="{'current':currentIndex===index}" v-for="(item,index) in goods">
-					{{item.name}}
+					<span>{{item.name}}</span>
 				</li>
 			</ul>
 		</div>
@@ -50,7 +50,7 @@
 			:minPrice="seller.minPrice"
 		></home-shopcart>
 	<right-open>
-			<goods-detail v-show="showDetail" @closeDetail="closeDetail" :selectFood="selectFood"></goods-detail>
+			<goods-detail v-if="showDetail" @closeDetail="closeDetail" :selectFood="selectFood"></goods-detail>
 	</right-open>
 </div>
 </template>
@@ -87,7 +87,7 @@ export default {
 			showDetail:false
 		} 
 	},
-	created(){
+	mounted(){
 		this.$nextTick(() => {
 				//挂载滚动插件
 				this.meunScroll = new BScroll(this.$refs.meunWrapper)
@@ -121,11 +121,12 @@ export default {
 				//获取到DOM，div里面有ul没有li，即数据没有？
 				//console.log(this.goods)
 				//console.log('右侧DOM有'+foodlist+'个')
+				//console.log(this.goods.length)
 				for(let i=0; i < this.goods.length; i++){
 					//DOM的方法clientHeight获取高度
 					height += foodlist[i].clientHeight;
 					this.heightList.push(height);
-					console.log(height)
+					//console.log('创建dom数组')
 				}
 				//测试一下
 				//console.log(this.heightList);
@@ -164,11 +165,15 @@ export default {
   		//判断滚动值是在那一个序列中，用在:class的li上
   		currentIndex(){
   			//使用循环来逐一判断
+  			console.log('执行计算属性')
   			for(let i=0 ; i<this.heightList.length ; i++){
   				let height1 = this.heightList[i]
   				let height2 = this.heightList[i+1]
+  				//console.log(this.heightList.length)
   				if(!height2 || this.scrollY < height2 && this.scrollY >= height1){
+  					//console.log(i)
   					return i
+  					
   				}
   			}
   			return 0	//默认处于第一个序列
@@ -267,13 +272,17 @@ export default {
 /*菜单栏样式*/
 	.home-goods_menuitem{
 		/*怎么垂直居中啊？？？*/
+		display: table;
 		height: 54px;
 		width: 56px;
-		line-height: 14px;
-		font-size: 12px;
-		
 		padding: 0 12px;
 		border-bottom: 1px solid rgba(7,17,27,0.1);
+	}
+	.home-goods_menuitem span{
+		display: table-cell;
+		vertical-align: middle;
+		line-height: 14px;
+		font-size: 12px;
 	}
 /*商品栏样式*/
 	.home-goods_foods--title{
