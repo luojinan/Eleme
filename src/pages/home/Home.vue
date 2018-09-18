@@ -41,7 +41,7 @@ export default{
 	methods:{
 		//axios获取json数据方法
 		getHomeInfo(){
-			axios.get('/api/data.json').then(this.getHomeInfoSucc)
+			axios.get('/static/mock/data.json').then(this.getHomeInfoSucc)
 		},
 		//成功获取json数据的回调函数
 		getHomeInfoSucc(res){

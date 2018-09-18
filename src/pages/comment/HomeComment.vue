@@ -89,7 +89,7 @@ export default {
 	methods:{
 		//axios获取json数据方法
 		getCommentInfo(){
-			axios.get('/api/data.json').then(this.getCommentInfoSucc)
+			axios.get('/static/mock/data.json').then(this.getCommentInfoSucc)
 		},
 		//成功获取json数据的回调函数
 		getCommentInfoSucc(res){

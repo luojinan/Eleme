@@ -66,6 +66,7 @@ export default{
 	methods:{
 		//点击数量悬浮键打开公共组件
 		handleGallaryOpen(){
+			console.log('点击商家信息')
 			this.isShow = true
 		},
 		handelGallaryClose(){
