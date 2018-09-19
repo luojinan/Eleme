@@ -1,12 +1,16 @@
 <template>
 	<div class="shopcart-control">
 		<move-animation>
-			<div class="shopcart-control_decrease" v-show="foods.count>0" @click="_handleDecrease">
+			<div 
+				class="shopcart-control_decrease" 
+				v-show="foods.count>0" 
+				@click.stop="_handleDecrease"
+			>
 				<div calss="rotate-animation">-</div>
 			</div>
 		</move-animation>
 		<div class="shopcart-control_count" v-show="foods.count>0">{{foods.count}}</div>	
-		<div class="shopcart-control_add" @click="_handleAdd">+</div>
+		<div class="shopcart-control_add" @click.stop="_handleAdd">+</div>
 	</div>
 </template>
 
