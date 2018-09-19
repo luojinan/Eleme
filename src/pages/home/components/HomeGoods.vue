@@ -3,7 +3,12 @@
 	<div class="home-goods">
 		<div class="home-goods_menu" ref="meunWrapper">
 			<ul>
-				<li class="home-goods_menuitem" @click="_handleClickMenu(index)" :class="{'current':currentIndex===index}" v-for="(item,index) in goods">
+				<li 
+					class="home-goods_menuitem" 
+					:class="{'current':currentIndex===index}" 
+					@click="_handleClickMenu(index)"
+					v-for="(item,index) in goods"
+				>
 					<span>{{item.name}}</span>
 				</li>
 			</ul>
@@ -87,9 +92,10 @@ export default {
 			showDetail:false
 		} 
 	},
-	mounted(){
+	created(){
 		this.$nextTick(() => {
 				//挂载滚动插件
+
 				this.meunScroll = new BScroll(this.$refs.meunWrapper)
 				this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{probeType:3})
 
@@ -100,36 +106,35 @@ export default {
 					this.scrollY = Math.abs(Math.round(pos.y))	//pso.y获取滚动值，取整取正
 					//console.log(this.scrollY)	//测试一下
 					//console.log(this.currentIndex)
-				})
-			this._calculateHight()	//没有数据进来？？？
+				})			
 		}) 
 	},
 	methods:{
 	
 		_calculateHight(){
-			
+			let that = this
+			this.$nextTick(()=>{
 				//获取一个类的li高度
 				//获取DOM元素className
-				let foodWrapper = this.$refs.foodsWrapper
-				let foodlist = this.$refs.foodsListHook
+				let foodWrapper = that.$refs.foodsWrapper
+				let foodlist = that.$refs.foodsListHook
 				//console.log('挂载完成后执行计算方法')
 				//把高度push进从0开始的数组
 				let height = 0;
-				this.heightList.push(height);
+				that.heightList.push(height);
 				//console.log('输出默认数组的第一项'+this.heightList.length)
 				///console.log('能获取到DOM右侧整个的内容'+foodlist)
 				//获取到DOM，div里面有ul没有li，即数据没有？
-				//console.log(this.goods)
-				//console.log('右侧DOM有'+foodlist+'个')
 				//console.log(this.goods.length)
-				for(let i=0; i < this.goods.length; i++){
+				for(let i=0; i < that.goods.length; i++){
 					//DOM的方法clientHeight获取高度
 					height += foodlist[i].clientHeight;
-					this.heightList.push(height);
-					//console.log('创建dom数组')
+					that.heightList.push(height);
 				}
 				//测试一下
-				//console.log(this.heightList);
+				//console.log(that.heightList);
+			})
+				
 		},
 		//点击联动方法
 		_handleClickMenu(index){
@@ -148,6 +153,9 @@ export default {
 		closeDetail(){
 			this.showDetail = false
 		},
+
+		
+
 	},
 	computed:{
 		//计算属性传值给子组件
@@ -162,23 +170,31 @@ export default {
 			}) ;
 			return foods ;
 		},
-  		//判断滚动值是在那一个序列中，用在:class的li上
+		//判断滚动值是在那一个序列中，用在:class的li上
   		currentIndex(){
   			//使用循环来逐一判断
-  			console.log('执行计算属性')
-  			for(let i=0 ; i<this.heightList.length ; i++){
-  				let height1 = this.heightList[i]
-  				let height2 = this.heightList[i+1]
-  				//console.log(this.heightList.length)
-  				if(!height2 || this.scrollY < height2 && this.scrollY >= height1){
-  					//console.log(i)
-  					return i
-  					
-  				}
-  			}
-  			return 0	//默认处于第一个序列
+  			//并不是计算属性监听不了数据，而是没有this.heightList
+  			//解决方法，是确保heightList全部push进去
+  			//console.log('执行计算属性'+this.heightList.length)
+  			if(this.heightList.length>1){
+	  			for(let i=0 ; i<this.heightList.length ; i++){
+	  				let height1 = this.heightList[i]
+	  				let height2 = this.heightList[i+1]
+	  				//console.log(this.heightList.length)
+	  				if(!height2 || this.scrollY < height2 && this.scrollY >= height1){
+	  					//console.log(i)
+	  					return i
+	  				}
+	  			}
+	  			return 0	//默认处于第一个序列
+	  		} 	
   		}
   	},
+  	watch:{
+  		'goods'(){
+  			this._calculateHight()
+  		},
+  	}
 
 /********************数据还没获取到，失败的操作dom******************************/
 	/*methods:{
