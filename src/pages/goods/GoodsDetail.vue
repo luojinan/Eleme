@@ -1,10 +1,32 @@
 <template>
+<div>
+	<span 
+		v-show="showScrollclc" 
+		:class="{'goods-detail_scrollclc':scrollY >323}" 
+		class="goods-detail_back" 
+		@click="handelDetailBack"
+		:style="opacityCLC"
+	> < </span>
+	<div 
+		v-show="showScrolllong" 
+		class="goods-detail_backlong" 
+		:class="{'goods-detail_scrolllong':scrollY >323}"
+		:style="opacityLong" 
+	>
+		
+		<h1>{{selectFood.name}}</h1>
+	</div>
+	<span 
+		v-show="showScrolllong" 
+		class="goods-detail_backlong--button" 
+		@click="handelDetailBack"
+	> < </span>
 	<div class="goods-detail" ref="detailScroll">
-		<div class="goods-detail_content">
+		<div>
+
 			<div class="goods-detail_header">
-				<img :src="selectFood.image">
-				<span class="goods-detail_back" @click="handelDetailBack"> < </span>
-			</div>
+				<img :src="selectFood.image">				
+			</div>			
 			<div class="goods-detail_food">
 				<h1>{{selectFood.name}}</h1>
 				<div class="goods-detail_food--text">
@@ -73,12 +95,10 @@
 						没有评价
 					</div>
 				</div>
-
 			</div>
-			
-
 		</div>
 	</div>
+</div>
 </template>
 
 <script>
@@ -110,6 +130,15 @@ export default {
 					all:'全部',
 					positive:'推荐',
 					negative:'吐槽'
+				},
+				scrollY:0,
+				showScrolllong:false,
+				showScrollclc:true,
+				opacityLong:{
+					opacity:0
+				},
+				opacityCLC:{
+					opacity:0.6
 				}
 			}
 		},
@@ -155,6 +184,39 @@ export default {
 				//否则以选择和当前评论状态匹配 true fasle
 				return this.selectType === type;
 			}
+		},
+		_tryScroll(){
+
+			if(!this.scroll){
+				this.$nextTick(()=> {
+					this.scroll = new BScroll(this.$refs.detailScroll,{probeType:3})
+					this.scroll.on('scroll',(pos)=>{
+						this.scrollY = Math.abs(Math.round(pos.y))
+						console.log(this.scrollY)
+
+						//计算透明度
+						if(this.scrollY > 323){
+							this.showScrolllong=true
+							this.showScrollclc=false
+							let opacity = (this.scrollY-323)/100
+							if(opacity>1){
+								opacity = 1
+							}else{opacity = opacity}
+							this.opacityLong={
+								opacity:opacity
+							}
+						}else{
+							this.showScrolllong=false
+							this.showScrollclc=true
+						}
+					})
+					
+				})
+			}else{
+				//console.log('刷新滚动')
+				
+			}			
+			//console.log(this.selectFood.ratings)
 		}
 	},
 	//过滤器，对数据进行格式化用
@@ -168,12 +230,7 @@ export default {
 		}
 	},
 	created(){
-		this.$nextTick(()=> {
-				if(!this.scroll){
-					this.scroll = new BScroll(this.$refs.detailScroll)
-				}
-				console.log(this.selectFood.ratings)
-			})
+		this._tryScroll()			
 	}
 
 
@@ -182,12 +239,60 @@ export default {
 
 <style>
 /*页面外部布局*/
+	.goods-detail_back{
+		z-index: 40;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 34px;
+		margin-left: 10px;
+		margin-top: 10px;
+		text-align: center;
+		border-radius: 50%;
+		height: 34px;
+		line-height: 34px;
+		font-size: 20px;
+		color: #fff;
+		background-color: rgb(7,17,27);		
+	}
+	.goods-detail_backlong{
+		z-index: 40;
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 34px;
+		width: 100%;
+		padding-left: 10px;
+		font-size: 0;
+		text-align: center;
+		background-color: #007AFF;
+	}
+	.goods-detail_backlong--button{
+		z-index: 40;
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: inline-block;
+		width: 34px;
+		height: 34px;
+		font-size: 20px;
+		line-height: 34px;
+		text-align: center;
+		color: #fff;	
+	}
+	.goods-detail_backlong h1{
+		color: #fff;
+		font-size: 14px;
+		line-height: 34px;
+		margin: 0 auto;
+		display: inline-block;
+	}
 	.goods-detail{
 		position: fixed;
 		/*不知道为什么定位了top，之后定位不了bottom*/
+		/*定位到了，因为dom在首页渲染所以有错，解决v-if不在首页渲染*/
 		bottom:48px;
 		left: 0;
-		right: 0;
 		top: 0;
 		overflow: hidden;
 		width: 100%;
@@ -196,13 +301,11 @@ export default {
 		transition: all 0.2s linear;
 		transform: translate3d(0,0,0);
 	}
-	.goods-detail_content{
-
-	}
+	
 /*商品介绍布局*/
 	.goods-detail_header{
 		position: relative;
-		height: 0;
+		height: 0;	
 		width: 100%;
 		padding-top: 100%;
 	}
@@ -213,19 +316,7 @@ export default {
 		width: 100%;
 		height: 100%
 	}
-	.goods-detail_back{
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		width: 34px;
-		height: 34px;
-		line-height: 34px;
-		font-size: 20px;
-		text-align: center;
-		color: #fff;
-		background-color: rgba(7,17,27,0.6);
-		border-radius: 50%
-	}
+	
 /*商品内容布局*/
 	.goods-detail_food{
 		padding: 18px;
